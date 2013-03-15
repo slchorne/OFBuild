@@ -19,6 +19,7 @@ iface="$1/ifcfg-tap$2";
 if [ -f $iface ]; then
     echo "$iface exists."
 else
+    echo "create $iface";
     echo -e "DEVICE=tap$2\nTUNNEL=Tap\nONBOOT=yes\nSTARTMODE=auto\nBRIDGE=br$2\nINTERFACETYPE=tap\nTUNNEL_LOCAL_IPADDR=0.0.0.0\nTUNNEL_SET_PERSISTENT=yes" \
     > $iface
 fi

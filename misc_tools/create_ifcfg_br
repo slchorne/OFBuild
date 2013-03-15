@@ -20,6 +20,7 @@ iface="$1/ifcfg-br$2";
 if [ -f $iface ]; then
     echo "$iface exists."
 else
+    echo "create $iface";
     echo -e "DEVICE=br$2\nTYPE=Bridge\nNM_CONTROLLED=no\nONBOOT=no\nSTARTMODE=auto\nDELAY=0\nBRIDGE=yes\nBRIDGE_PORTS='eth$2 tap$2'\nBRIDGE_FORWARDDELAY=0" \
     > $iface
 fi
