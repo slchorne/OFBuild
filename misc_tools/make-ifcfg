@@ -37,7 +37,7 @@ echo "Creating Bridges, Taps and add the same to physical interfaces ..."
 echo "================================="
 for ((i=start_if_num; i <= num_interfaces; i++))
 do
-	$LINC_SCRIPT_DIR/create_ifcfg_eth $i
-	$LINC_SCRIPT_DIR/create_ifcfg_br $i
-	$LINC_SCRIPT_DIR/create_ifcfg_tap $i
+	$LINC_SCRIPT_DIR/create_ifcfg_eth $netdir $i
+	$LINC_SCRIPT_DIR/create_ifcfg_br $netdir $i
+	$LINC_SCRIPT_DIR/create_ifcfg_tap $netdir $i
 done
