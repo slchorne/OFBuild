@@ -5,7 +5,7 @@ if [ -z "$1" ] ; then
     echo "USAGE : $0 <path_to_networking> <number of the tap interface>"
     exit 1;
 fi
-if [ $2 -eq "0" ]; then
+if [ $2 = "0" ]; then
     echo "   (Note: tap0 cannot be configured)";
     exit 1;
 fi 
