@@ -1,0 +1,43 @@
+#!/bin/sh
+LINC_SCRIPT_DIR=/usr/local/src/linc/misc_tools
+
+### Change the value of num_interfaces to correspond to the number required
+if [ -z "$1" ] ; then
+   echo "USAGE : $0 <num_interfaces>"
+   exit
+fi
+
+num_interfaces=$1
+
+### Interface numbering starts at 1, by default, and are sequential
+start_if_num=01
+
+#####################################################################
+#####     No need to change anything from here on 		#####
+#####################################################################
+
+# find the version of OS we care about
+echo "Looking for config directory"
+netdir="" ;
+for trydir in /etc/sysconfig/network \
+    /etc/sysconfig/network-scripts ; do
+    if [ -d $trydir ] ; then
+        netdir=$trydir;
+    fi ;
+done ;
+
+if [ -z "$netdir" ] ; then
+    echo "No config directory found";
+    exit
+else
+    echo "using directory $netdir";
+fi;
+
+echo "Creating Bridges, Taps and add the same to physical interfaces ..."
+echo "================================="
+for ((i=start_if_num; i <= num_interfaces; i++))
+do
+	$LINC_SCRIPT_DIR/create_ifcfg_eth $i
+	$LINC_SCRIPT_DIR/create_ifcfg_br $i
+	$LINC_SCRIPT_DIR/create_ifcfg_tap $i
+done
