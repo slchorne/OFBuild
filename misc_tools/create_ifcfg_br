@@ -1,0 +1,14 @@
+#!/bin/sh
+#### Creates ifcfg-br$1 file and stores in /etc/sysconfig/network directory #######
+
+if [ $1 -eq "0" ]; then
+    echo "Usage: $0 <number of the bridge interface> (Note: br0 cannot be configured)"
+    echo "Usage example to configure for br5: $0 5"
+    exit 1;
+fi 
+
+if [ -f /etc/sysconfig/network/ifcfg-br$1 ]; then
+    echo "/etc/sysconfig/network/ifcfg-br$1 exists."
+else
+    echo -e "DEVICE=br$1\nTYPE=Bridge\nNM_CONTROLLED=no\nONBOOT=no\nSTARTMODE=auto\nDELAY=0\nBRIDGE=yes\nBRIDGE_PORTS='eth$1 tap$1'\nBRIDGE_FORWARDDELAY=0" > /etc/sysconfig/network/ifcfg-br$1
+fi
