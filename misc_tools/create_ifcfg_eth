@@ -1,14 +1,22 @@
 #!/bin/sh
 #### Creates ifcfg-eth$1 file and stores in /etc/sysconfig/network directory #######
-
-if [ $1 -eq "0" ]; then
-    echo "Usage: $0 <number of the eth interface> (Note: eth0 cannot be configured)"
-    echo "Usage example to configure for eth5: $0 5"
+if [ -z "$1" ] ; then
+    echo "USAGE : $0 <path_to_networking> <number of the eth interface>"
+    exit 1;
+fi
+if [ $2 -eq "0" ]; then
+    echo "   (Note: eth0 cannot be configured)";
     exit 1;
 fi 
+if [ ! -d $1 ]; then
+    echo "Error: $1 does not exist, exiting";
+    exit 2;
+fi
 
-if [ -f /etc/sysconfig/network/ifcfg-eth$1 ]; then
-    echo "/etc/sysconfig/network/ifcfg-eth$1 exists."
+iface="$1/ifcfg-eth$2";
+
+if [ -f $iface ]; then
+    echo "$iface exists."
 else
-    echo -e "DEVICE=eth$1\nTYPE=Ethernet\nNM_CONTROLLED=no\nONBOOT=no\nNETMASK=255.255.255.0\nSTARTMODE=auto\nBridge=br$1" > /etc/sysconfig/network/ifcfg-eth$1
+    echo -e "DEVICE=eth$2\nTYPE=Ethernet\nNM_CONTROLLED=no\nONBOOT=no\nNETMASK=255.255.255.0\nSTARTMODE=auto\nBridge=br$2" > $iface
 fi

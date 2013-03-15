@@ -1,14 +1,24 @@
 #!/bin/sh
 #### Creates ifcfg-tap$1 file and stores in /etc/sysconfig/network directory #######
 
-if [ $1 -eq "0" ]; then
-    echo "Usage: $0 <number of the tap interface> (Note: tap0 cannot be configured)"
-    echo "Usage example to configure for tap5: $0 5"
+if [ -z "$1" ] ; then
+    echo "USAGE : $0 <path_to_networking> <number of the tap interface>"
+    exit 1;
+fi
+if [ $2 -eq "0" ]; then
+    echo "   (Note: tap0 cannot be configured)";
     exit 1;
 fi 
+if [ ! -d $1 ]; then
+    echo "Error: $1 does not exist, exiting";
+    exit 2;
+fi
 
-if [ -f /etc/sysconfig/network/ifcfg-tap$1 ]; then
-    echo "/etc/sysconfig/network/ifcfg-tap$1 exists."
+iface="$1/ifcfg-tap$2";
+
+if [ -f $iface ]; then
+    echo "$iface exists."
 else
-    echo -e "DEVICE=tap$1\nTUNNEL=Tap\nONBOOT=yes\nSTARTMODE=auto\nBRIDGE=br$1\nINTERFACETYPE=tap\nTUNNEL_LOCAL_IPADDR=0.0.0.0\nTUNNEL_SET_PERSISTENT=yes" > /etc/sysconfig/network/ifcfg-tap$1
+    echo -e "DEVICE=tap$2\nTUNNEL=Tap\nONBOOT=yes\nSTARTMODE=auto\nBRIDGE=br$2\nINTERFACETYPE=tap\nTUNNEL_LOCAL_IPADDR=0.0.0.0\nTUNNEL_SET_PERSISTENT=yes" \
+    > $iface
 fi
